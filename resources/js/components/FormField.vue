@@ -50,8 +50,11 @@ export default {
     errorAttributes() {
       const locales = this.locales;
       const errorAttributes = {};
+
       for (const locale of locales) {
-        errorAttributes[locale.key] = `${this.field.attribute}.${locale.key}`;
+        if (locale.key === 'de' || locale.key === 'en') {
+          errorAttributes[locale.key] = `${this.field.attribute}.${locale.key}`;
+        }
       }
       return errorAttributes;
     },
