@@ -42,7 +42,9 @@ export default {
 
       // Add value to FormData
       for (const locale of this.locales) {
-        formData.append(`${this.field.attribute}[${locale.key}]`, this.value[locale.key]);
+        if ((locale.key === 'de' || locale.key === 'en') || this.value[locale.key] !== '') {
+          formData.append(`${this.field.attribute}[${locale.key}]`, this.value[locale.key]);
+        }
       }
     },
   },

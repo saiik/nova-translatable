@@ -188,7 +188,10 @@ __webpack_require__.r(__webpack_exports__);
       try {
         for (var _iterator = this.locales[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
           var locale = _step.value;
-          formData.append("".concat(this.field.attribute, "[").concat(locale.key, "]"), this.value[locale.key]);
+
+          if (locale.key === 'de' || locale.key === 'en' || this.value[locale.key] !== '') {
+            formData.append("".concat(this.field.attribute, "[").concat(locale.key, "]"), this.value[locale.key]);
+          }
         }
       } catch (err) {
         _didIteratorError = true;
