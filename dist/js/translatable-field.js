@@ -11155,7 +11155,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   mounted: function mounted() {
     this.value = this.getInitialValue();
     this.originalFieldName = this.field.name;
-    this.activeLocale = this.locales[0].key;
+    this.activeLocale = this.getCurrentLocale();
     this.fakeField = _objectSpread({}, this.field, {
       value: this.value[this.activeLocale] || '',
       attribute: "".concat(this.field.attribute, ".").concat(this.activeLocale)
@@ -11206,6 +11206,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
 
       return initialValue;
+    },
+    getCurrentLocale: function getCurrentLocale() {
+      var _this2 = this;
+
+      Nova.request().get('/nova-vendor/language-switch/language/active').then(function (res) {
+        _this2.activeLocale = res.data;
+      })["catch"](function (e) {
+        console.log(e);
+      });
     },
     copyValueFromCurrentLocale: function copyValueFromCurrentLocale() {
       if (!this.fakeField.fill) return;
