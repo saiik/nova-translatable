@@ -7,6 +7,7 @@ use Laravel\Nova\Events\ServingNova;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Nova\Fields\Field;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 
 class FieldServiceProvider extends ServiceProvider
 {
@@ -45,8 +46,10 @@ class FieldServiceProvider extends ServiceProvider
         Field::macro('translatable', function ($overrideLocales = []) use ($self) {
             $locales = $self->getLocales($overrideLocales);
             $component = $this->component;
+            $currentLocale = Auth::user()->language ?? 'de';
 
-            $this->resolveUsing(function ($value, $resource, $attribute) use ($locales, $component) {
+
+            $this->resolveUsing(function ($value, $resource, $attribute) use ($locales, $component, $currentLocale) {
                 // Load value from either the model or from the given $value
                 if (isset($resource) && method_exists($resource, 'getTranslations')) {
                     $value = $resource->getTranslations($attribute);
@@ -61,7 +64,8 @@ class FieldServiceProvider extends ServiceProvider
                         'original_attribute' => $this->attribute,
                         'original_component' => $component,
                         'locales' => $locales,
-                        'value' => $value
+                        'value' => $value,
+                        'currentLocale' => $currentLocale
                     ],
                 ]);
 

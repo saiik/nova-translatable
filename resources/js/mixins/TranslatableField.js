@@ -3,13 +3,13 @@ export default {
     value: {},
     activeLocale: void 0,
     originalFieldName: void 0,
-    fakeField: void 0,
+    fakeField: void 0
   }),
 
   mounted() {
     this.value = this.getInitialValue();
     this.originalFieldName = this.field.name;
-    this.activeLocale = this.getCurrentLocale();
+    this.activeLocale = this.field.translatable.currentLocale;
     this.fakeField = {
       ...this.field,
       value: this.value[this.activeLocale] || '',
@@ -41,17 +41,7 @@ export default {
       }
       return initialValue;
     },
-
-    getCurrentLocale() {
-      Nova.request().get('/nova-vendor/language-switch/language/active')
-        .then(res => {
-          this.activeLocale = res.data
-        })
-        .catch(e => {
-          console.log(e);
-        })
-    },
-
+    
     copyValueFromCurrentLocale() {
       if (!this.fakeField.fill) return;
 
